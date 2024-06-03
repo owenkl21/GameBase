@@ -1,15 +1,14 @@
-import { useState } from 'react'
-import './App.css'
-import ListGroup from './components/ListGroup'
+import './App.css';
+import ListGroup from './components/ListGroup';
 
 function App() {
-  const [count, setCount] = useState(0)
-
+  let items = ['New York', 'Los Angeles', 'Chicago', 'Houston'];
+  let heading = 'Tottie Kop';
   return (
     <>
-      <ListGroup />
+      <ListGroup items={items} heading={heading} />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
