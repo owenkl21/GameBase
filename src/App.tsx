@@ -15,7 +15,6 @@ function App() {
   };
 
   const [showAlert, setShowAlert] = useState(false);
-
   return (
     <>
       {showAlert && (
@@ -43,7 +42,11 @@ function App() {
         onSelectItem={handleSelectItem}
       />
 
-      <Like />
+      <Like
+        clicked={() => {
+          console.log('Post Liked');
+        }}
+      />
     </>
   );
 }
