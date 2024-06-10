@@ -1,0 +1,19 @@
+body{
+    padding: 20px;
+}
+thead, tbody, tr, th,
+td{
+    text-align: center;
+}
+
+.list{
+    display: flex;
+    width: 70%;
+    margin: auto;
+}
+
+
+.alert{
+    width: 100%;
+    text-align: center;
+}

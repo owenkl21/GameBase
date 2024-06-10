@@ -1,4 +1,4 @@
-import { ReactNode, useState } from 'react';
+import { useState } from 'react';
 
 const Expandable = () => {
   const [expanded, setExpanded] = useState(false);
