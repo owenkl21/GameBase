@@ -34,6 +34,17 @@ function App() {
     return () => controller.abort();
   }, []);
 
+  const handleDelete = (user: User) => {
+    setUsers(users.filter((u) => u.id !== user.id));
+    const originalUsers = users;
+    axios
+      .delete(`https://jsonplaceholder.typicode.com/users/${user.id}`)
+      .catch((err) => {
+        setError(err.message);
+        setUsers(originalUsers);
+      });
+  };
+
   return (
     <>
       {error ? (
@@ -45,7 +56,22 @@ function App() {
           <span className="visually-hidden">Loading...</span>
         </div>
       ) : (
-        users.map((user) => <div key={user.id}>{user.name}</div>)
+        <ul className="list-group d-flex flex-column">
+          {users.map((user) => (
+            <li
+              className="list-group-item d-flex justify-content-between align-items-center"
+              key={user.id}
+            >
+              {user.name}{' '}
+              <button
+                className="btn btn-outline-danger"
+                onClick={() => handleDelete(user)}
+              >
+                Delete
+              </button>
+            </li>
+          ))}
+        </ul>
       )}
     </>
   );
