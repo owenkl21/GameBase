@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import axios, { CanceledError } from 'axios';
 import { useEffect, useState } from 'react';
 import { DiVim } from 'react-icons/di';
+import { original } from 'immer';
 
 interface User {
   id: number;
@@ -44,34 +45,77 @@ function App() {
         setUsers(originalUsers);
       });
   };
+  const data = {
+    id: 11,
+    name: 'Owen Kleinhans',
+  };
+  const handleAdd = () => {
+    const originalUsers = users;
+    axios
+      .post('https://jsonplaceholder.typicode.com/users', data)
+      .then((res) => {
+        setUsers([res.data, ...users]);
+      })
+      .catch((err) => {
+        setError(err.message);
+        setUsers(originalUsers);
+      });
+  };
+
+  const handleUpdate = (user: User) => {
+    const updatedUsers = { ...user, name: 'Klein Owen' };
+    console.log('updating');
+    axios
+      .post(
+        `https://jsonplaceholder.typicode.com/users/${user.id}`,
+        updatedUsers
+      )
+      .then((res) => {
+        setUsers([res.data, ...users]);
+      });
+  };
 
   return (
     <>
-      {error ? (
+      {error && (
         <div className="alert alert-danger" role="alert">
           {error}
         </div>
-      ) : isLoading ? (
+      )}{' '}
+      {isLoading ? (
         <div className="spinner-border" role="status">
           <span className="visually-hidden">Loading...</span>
         </div>
       ) : (
-        <ul className="list-group d-flex flex-column">
-          {users.map((user) => (
-            <li
-              className="list-group-item d-flex justify-content-between align-items-center"
-              key={user.id}
-            >
-              {user.name}{' '}
-              <button
-                className="btn btn-outline-danger"
-                onClick={() => handleDelete(user)}
+        <>
+          <button onClick={handleAdd} className="btn btn-primary">
+            Add User
+          </button>
+          <ul className="list-group d-flex flex-column">
+            {users.map((user) => (
+              <li
+                className="list-group-item d-flex justify-content-between align-items-center"
+                key={user.id}
               >
-                Delete
-              </button>
-            </li>
-          ))}
-        </ul>
+                {user.name}{' '}
+                <div className="d-flex gap-2">
+                  <button
+                    className="btn btn-outline-secondary"
+                    onClick={() => handleUpdate(user)}
+                  >
+                    Update
+                  </button>
+                  <button
+                    className="btn btn-outline-danger"
+                    onClick={() => handleDelete(user)}
+                  >
+                    Delete
+                  </button>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </>
       )}
     </>
   );
